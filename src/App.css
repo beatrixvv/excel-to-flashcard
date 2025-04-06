@@ -1,0 +1,228 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  --background-color: #252525;
+  --border-color: #27374d;
+  --accent-color: #526d82;
+  --hover-color: #9db2bf;
+  --text-color: #dde6ed;
+  --mastered-color: #a8925a;
+  --easy-color: #6b8e62;
+  --hard-color: #a05a3e;
+  --learning-color: #4a7c79;
+  --new-color: #5a5f9f;
+
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+h1 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  margin: 1rem;
+}
+
+.app-content {
+  display: grid;
+  grid-template-columns: 0.5fr 1fr 0.5fr;
+  grid-template-rows: 1fr auto;
+  grid-template-areas:
+    "fileSheet flashcard contents"
+    "fileSheet progress order";
+  width: 100%;
+  flex-grow: 1;
+  overflow: hidden;
+}
+
+.file-sheet {
+  grid-area: fileSheet;
+  display: flex;
+  flex-direction: column;
+  margin: 0 2rem;
+  overflow: auto;
+}
+
+.circle-button {
+  background-color: var(--accent-color);
+  color: var(--text-color);
+  border: none;
+  border-radius: 50%;
+  width: 3rem;
+  height: 3rem;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.circle-button:hover {
+  background-color: var(--hover-color);
+  color: var(--background-color);
+  transition: background-color 300ms, color 300ms;
+}
+
+.tooltip {
+  background-color: transparent !important;
+  border: 2px solid var(--border-color);
+  border-radius: 20px !important;
+  padding: 0.4rem 0.8rem !important;
+}
+
+.hidden {
+  display: none;
+}
+
+.file-manager {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 1rem;
+}
+
+.settings-box {
+  flex: 1;
+  border: 5px solid var(--border-color);
+  border-radius: 20px;
+  margin-bottom: 1rem;
+  padding: 0.5rem 1rem;
+  overflow: auto;
+}
+
+.checkbox-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.8rem 0;
+  font-size: 1.2rem;
+}
+
+.checkbox-label {
+  padding: 0.2rem 0.5rem;
+  pointer-events: none;
+  text-transform: capitalize;
+}
+
+.checkbox-label:hover {
+  box-shadow: 0 0 10px var(--accent-color);
+  transition: 200ms;
+}
+
+.checkbox-label input,
+.checkbox-label label {
+  pointer-events: auto;
+}
+
+.checkbox-label input {
+  margin-right: 0.5rem;
+  cursor: pointer;
+  accent-color: var(--accent-color);
+}
+
+.sort-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.flashcard-container {
+  grid-area: flashcard;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  overflow: auto;
+}
+
+.flashcard {
+  flex: 1;
+  height: 100%;
+  border: 10px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  position: relative;
+}
+
+.flashcard.back {
+  border: 10px solid var(--accent-color);
+}
+
+.flashcard > div {
+  font-size: 2rem;
+  padding: 1rem;
+  overflow: auto;
+}
+
+.read-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 1rem;
+  background-color: transparent;
+  color: var(--text-color);
+  font-size: 2rem;
+  border: none;
+  cursor: pointer;
+}
+
+.read-button.back {
+  display: none;
+}
+
+.content {
+  grid-area: contents;
+  display: flex;
+  flex-direction: column;
+  margin: 0 2rem;
+  overflow: auto;
+}
+
+.content .settings-box:last-child {
+  margin-bottom: 0;
+}
+
+.rectangle-button {
+  background-color: var(--accent-color);
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  text-transform: capitalize;
+  cursor: pointer;
+}
+
+.rectangle-button:hover {
+  scale: 1.1;
+  transition: 200ms;
+}
+
+.progress {
+  grid-area: progress;
+}
+
+.progress-buttons {
+  display: flex;
+  justify-content: space-evenly;
+  margin: 1rem;
+}
+
+.random {
+  grid-area: order;
+  display: flex;
+  justify-content: center;
+  margin: 1rem;
+  align-items: center;
+}
