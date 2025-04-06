@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/excel-to-flashcard/static/css/main.24965cf1.css",
+    "main.js": "/excel-to-flashcard/static/js/main.1c76969d.js",
+    "index.html": "/excel-to-flashcard/index.html",
+    "main.24965cf1.css.map": "/excel-to-flashcard/static/css/main.24965cf1.css.map",
+    "main.1c76969d.js.map": "/excel-to-flashcard/static/js/main.1c76969d.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.24965cf1.css",
+    "static/js/main.1c76969d.js"
+  ]
+}
