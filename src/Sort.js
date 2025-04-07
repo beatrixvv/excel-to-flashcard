@@ -8,7 +8,7 @@ export default function Sort({
   handleSort,
 }) {
   return (
-    <div className="settings-box">
+    <div id="sort" className="settings-box">
       <h2>Sort</h2>
       <div className="checkbox-container">
         {[...selectedHeaders].map((header) => (
