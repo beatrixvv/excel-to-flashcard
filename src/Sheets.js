@@ -6,7 +6,7 @@ export default function Sheets({
   handleSheetSelection,
 }) {
   return (
-    <div className="settings-box">
+    <div id="sheets" className="settings-box">
       <h2>Sheets</h2>
       <div className="checkbox-container">
         {sheetNames.map((sheet, index) => (
