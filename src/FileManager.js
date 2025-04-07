@@ -18,6 +18,7 @@ export default function FileManager({ handleUpload, handleSave }) {
         data-tooltip-content={"Upload"}
         onClick={handleClick}
         className="circle-button"
+        id="upload-button"
       >
         <FontAwesomeIcon icon={faUpload} />
       </button>
@@ -36,6 +37,7 @@ export default function FileManager({ handleUpload, handleSave }) {
         data-tooltip-content={"Save"}
         onClick={handleSave}
         className="circle-button"
+        id="save-button"
       >
         <FontAwesomeIcon icon={faSave} />
       </button>
