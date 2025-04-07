@@ -12,6 +12,7 @@ import { Toaster } from "react-hot-toast";
 import toast from "react-hot-toast";
 
 import "./App.css";
+import AppTour from "./AppTour";
 import FileManager from "./FileManager";
 import Sheets from "./Sheets";
 import Sort from "./Sort";
@@ -334,6 +335,7 @@ function App() {
 
   return (
     <div className="app-container">
+      <AppTour />
       <h1>Excel to Flashcard</h1>
       <Toaster position="top-center" />
       <div className="app-content">
@@ -352,7 +354,10 @@ function App() {
           />
         </div>
         <div className="flashcard-container">
-          <button className="circle-button" onClick={decreaseIndex}>
+          <button
+            className={`circle-button ${index === 0 ? "end" : ""}`}
+            onClick={decreaseIndex}
+          >
             <FontAwesomeIcon icon={faArrowLeft} />
           </button>
           <Flashcard
@@ -363,7 +368,12 @@ function App() {
             progressDict={PROGRESS}
             progressHeader={PROGRESS_HEADER}
           />
-          <button className="circle-button" onClick={increaseIndex}>
+          <button
+            className={`circle-button ${
+              index === flashcards.length - 1 ? "end" : ""
+            }`}
+            onClick={increaseIndex}
+          >
             <FontAwesomeIcon icon={faArrowRight} />
           </button>
         </div>
