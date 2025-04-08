@@ -10,6 +10,7 @@ import {
 import * as XLSX from "xlsx";
 import { Toaster } from "react-hot-toast";
 import toast from "react-hot-toast";
+import arrayShuffle from "array-shuffle";
 
 import "./App.css";
 import AppTour from "./AppTour";
@@ -44,9 +45,10 @@ function App() {
   const [backHeader, setBackHeader] = useState(new Set());
   const [flashcards, setFlashcards] = useState([]);
   const [index, setIndex] = useState(0);
+  const [sort, setSort] = useState(false);
   const [sortIndex, setSortIndex] = useState([]);
   const [random, setRandom] = useState(false);
-  const [randomOrderIndices, setRandomOrderIndices] = useState([]);
+  const [orderIndices, setOrderIndices] = useState([]);
 
   function handleUpload(event) {
     const file = event.target.files[0];
@@ -112,9 +114,8 @@ function App() {
       // Trigger even if the same file is re-uploaded
       event.target.value = "";
 
-      // Reset all status
+      // Reset status
       setIndex(0);
-      setRandom(false);
 
       // Show messages based on the changes
       if (status === "added") {
@@ -147,6 +148,7 @@ function App() {
     setIndex(0);
     // Reset sort status
     resetSort();
+    setSort(true);
     setRandom(false);
   }
 
@@ -164,6 +166,7 @@ function App() {
         SORT.length,
     });
     setSortIndex(newSortIndex);
+    setSort(true);
 
     // Show the first flashcard
     setIndex(0);
@@ -197,13 +200,14 @@ function App() {
         newWorkbook.Sheets[sheetName] = XLSX.utils.json_to_sheet(jsonData);
       }
       setUpdatedWorkbook(newWorkbook);
+      setSort(false);
     }
   }
 
   function randomFlashcard() {
     resetSort();
     setRandom(true);
-    setRandomOrderIndices([]);
+    setSort(false);
     setIndex(0);
   }
 
@@ -262,10 +266,12 @@ function App() {
         });
         return updated;
       });
+      setSort(true);
     } else {
       setFrontHeader(new Set());
       setBackHeader(new Set());
       setSortIndex([]);
+      setSort(true);
     }
   }, [commonHeaders]);
 
@@ -295,33 +301,36 @@ function App() {
 
     // Sort or randomize the data
     let data = [];
+    let indices = allData.map((_, index) => index);
     if (random) {
-      if (randomOrderIndices.length > 0) {
-        // Use the previous random order
-        data = randomOrderIndices.map((i) => allData[i]);
-      } else {
-        // Randomize the data
-        const indices = allData.map((_, index) => index);
-        for (let i = indices.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [indices[i], indices[j]] = [indices[j], indices[i]];
-        }
-        setRandomOrderIndices(indices);
-        data = indices.map((i) => allData[i]);
+      // Randomize the data
+      indices = arrayShuffle(indices);
+      if (JSON.stringify(indices) !== JSON.stringify(orderIndices)) {
+        setOrderIndices(indices);
       }
-    } else {
+      data = indices.map((i) => allData[i]);
+      setRandom(false);
+    } else if (sort) {
       // Sort the data
-      data = [...allData].sort((a, b) => {
+      indices.sort((a, b) => {
         let result = 0;
         for (const { header, order } of sortIndex) {
-          const aVal = a[header];
-          const bVal = b[header];
+          const aVal = allData[a][header];
+          const bVal = allData[b][header];
           if (order === 0 || aVal === bVal) continue;
           const increasing = order === 1;
           result = increasing ? (aVal > bVal ? 1 : -1) : aVal < bVal ? 1 : -1;
         }
         return result;
       });
+      if (JSON.stringify(indices) !== JSON.stringify(orderIndices)) {
+        setOrderIndices(indices);
+      }
+      data = indices.map((i) => allData[i]);
+      setSort(false);
+    } else {
+      // Use previous order
+      data = orderIndices.map((i) => allData[i]);
     }
     setFlashcards(data);
   }, [
@@ -330,7 +339,8 @@ function App() {
     selectedHeaders,
     sortIndex,
     random,
-    randomOrderIndices,
+    sort,
+    orderIndices,
   ]);
 
   return (
