@@ -191,7 +191,7 @@ function App() {
       const worksheet = newWorkbook.Sheets[sheetName];
       let jsonData = XLSX.utils.sheet_to_json(worksheet);
       const rowIndex = jsonData.findIndex((row) =>
-        commonHeaders.every(
+        [...selectedHeaders].every(
           (header) => row[header] === flashcards[index][header]
         )
       );
@@ -332,6 +332,8 @@ function App() {
       // Use previous order
       data = orderIndices.map((i) => allData[i]);
     }
+    // If there is no header selected (PROGRESS_HEADER is always selected by default)
+    data = selectedHeaders.size === 1 ? [] : data;
     setFlashcards(data);
   }, [
     updatedWorkbook,
