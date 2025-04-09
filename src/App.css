@@ -188,6 +188,14 @@ h1 {
   display: none;
 }
 
+.index-tracker {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding: 0.5rem 1rem;
+  pointer-events: none;
+}
+
 .content {
   grid-area: contents;
   display: flex;
