@@ -55,6 +55,9 @@ export default function Flashcard({
             <p key={key}>{value}</p>
           ))}
       </div>
+      <h3 className={"index-tracker"}>
+        {index} / {content.length}
+      </h3>
     </div>
   );
 }
