@@ -52,7 +52,9 @@ export default function Flashcard({
         {Object.entries(data)
           .filter(([key]) => header.has(key) && key !== progressHeader)
           .map(([key, value]) => (
-            <p key={key}>{value}</p>
+            <p key={key} style={{ whiteSpace: "pre-wrap" }}>
+              {value}
+            </p>
           ))}
       </div>
       <h3 className={"index-tracker"}>
