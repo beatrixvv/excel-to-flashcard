@@ -58,7 +58,7 @@ export default function Flashcard({
           ))}
       </div>
       <h3 className={"index-tracker"}>
-        {index + 1} / {content.length}
+        {content.length ? index + 1 : 0} / {content.length}
       </h3>
     </div>
   );
