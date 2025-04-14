@@ -92,10 +92,17 @@ function App() {
             row.length = headers.length;
           }
 
-          let statusValue = row[statusIndex] || "";
-          if (!(statusValue in PROGRESS)) {
-            row[statusIndex] = DEFAULT_STATUS;
-            if (status !== "added") status = "modified";
+          // Keep row only if it has content in non-status columns
+          const content = row.filter((_, idx) => idx !== statusIndex);
+          const keepRow = content.some(
+            (cell) => cell !== null && cell !== undefined && cell !== ""
+          );
+          if (keepRow) {
+            let statusValue = row[statusIndex] || "";
+            if (!(statusValue in PROGRESS)) {
+              row[statusIndex] = DEFAULT_STATUS;
+              if (status !== "added") status = "modified";
+            }
           }
         }
 
