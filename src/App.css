@@ -232,10 +232,10 @@ h1 {
   margin: 1rem;
 }
 
-.random {
+.order {
   grid-area: order;
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
   margin: 1rem;
   align-items: center;
 }
