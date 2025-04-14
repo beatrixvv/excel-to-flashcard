@@ -218,6 +218,13 @@ function App() {
     setIndex(0);
   }
 
+  function resetOrder() {
+    resetSort();
+    setRandom(false);
+    setSort(true);
+    setIndex(0);
+  }
+
   // Helper functions
   function toggleHeader(setter) {
     return (header) => {
@@ -410,9 +417,12 @@ function App() {
           progressHeader={PROGRESS_HEADER}
           handleProgressChange={handleProgressChange}
         />
-        <div className="random">
+        <div className="order">
           <button className="rectangle-button" onClick={randomFlashcard}>
             Random
+          </button>
+          <button className="rectangle-button" onClick={resetOrder}>
+            Reset Order
           </button>
         </div>
       </div>
