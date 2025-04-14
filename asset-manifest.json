@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/excel-to-flashcard/static/css/main.15611cf2.css",
-    "main.js": "/excel-to-flashcard/static/js/main.94f5ec0d.js",
+    "main.css": "/excel-to-flashcard/static/css/main.9b22008f.css",
+    "main.js": "/excel-to-flashcard/static/js/main.512f9459.js",
     "index.html": "/excel-to-flashcard/index.html",
-    "main.15611cf2.css.map": "/excel-to-flashcard/static/css/main.15611cf2.css.map",
-    "main.94f5ec0d.js.map": "/excel-to-flashcard/static/js/main.94f5ec0d.js.map"
+    "main.9b22008f.css.map": "/excel-to-flashcard/static/css/main.9b22008f.css.map",
+    "main.512f9459.js.map": "/excel-to-flashcard/static/js/main.512f9459.js.map"
   },
   "entrypoints": [
-    "static/css/main.15611cf2.css",
-    "static/js/main.94f5ec0d.js"
+    "static/css/main.9b22008f.css",
+    "static/js/main.512f9459.js"
   ]
 }
