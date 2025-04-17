@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faVolumeUp } from "@fortawesome/free-solid-svg-icons";
 
@@ -13,10 +13,6 @@ export default function Flashcard({
   const [frontSide, setFrontSide] = useState(true);
   const data = content[index] ?? {};
   const header = frontSide ? frontHeader : backHeader;
-
-  function handleClick() {
-    setFrontSide((prev) => !prev);
-  }
 
   function readFlashcard(event) {
     // Prevent the card from flipping
@@ -33,6 +29,23 @@ export default function Flashcard({
     utterance.lang = isChinese ? "zh-CN" : "en-US";
     window.speechSynthesis.speak(utterance);
   }
+
+  const handleClick = useCallback(() => {
+    setFrontSide((prev) => !prev);
+  }, []);
+
+  // Handle keyboard events to flip flashcard
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === "ArrowUp" || event.key === "ArrowDown") {
+        handleClick();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [handleClick]);
 
   return (
     <div
