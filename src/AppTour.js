@@ -28,11 +28,13 @@ export default function AppTour() {
     },
     {
       target: ".flashcard-container",
-      content: "💥 Click to flip, arrows to navigate",
+      content:
+        "💥 Click (or use the up or down arrows) to flip, arrows (or keyboard arrows) to navigate",
     },
     {
       target: ".progress",
-      content: "📈 Log your mastery with progress tracking",
+      content:
+        "📈 Log your mastery with progress tracking (Your 1-5 number keys on keyboard also works!)",
     },
     {
       target: "#sort",
