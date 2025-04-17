@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowLeft,
@@ -180,37 +180,6 @@ function App() {
     setRandom(false);
   }
 
-  function decreaseIndex() {
-    setIndex((prevIndex) => Math.max(prevIndex - 1, 0));
-  }
-
-  function increaseIndex() {
-    setIndex((prevIndex) => Math.min(prevIndex + 1, flashcards.length - 1));
-  }
-
-  function handleProgressChange(event) {
-    if (updatedWorkbook) {
-      const newStatus = event.currentTarget.value;
-
-      // Update the workbook
-      const newWorkbook = { ...updatedWorkbook };
-      const sheetName = flashcards[index].sheet;
-      const worksheet = newWorkbook.Sheets[sheetName];
-      let jsonData = XLSX.utils.sheet_to_json(worksheet);
-      const rowIndex = jsonData.findIndex((row) =>
-        [...selectedHeaders].every(
-          (header) => row[header] === flashcards[index][header]
-        )
-      );
-      if (rowIndex !== -1) {
-        jsonData[rowIndex][PROGRESS_HEADER] = newStatus;
-        newWorkbook.Sheets[sheetName] = XLSX.utils.json_to_sheet(jsonData);
-      }
-      setUpdatedWorkbook(newWorkbook);
-      setSort(false);
-    }
-  }
-
   function randomFlashcard() {
     resetSort();
     setRandom(true);
@@ -265,6 +234,55 @@ function App() {
   const selectedHeaders = useMemo(() => {
     return new Set([...frontHeader, ...backHeader]);
   }, [frontHeader, backHeader]);
+
+  const decreaseIndex = useCallback(() => {
+    if (flashcards.length === 0) return;
+    setIndex((prevIndex) => Math.max(prevIndex - 1, 0));
+  }, [flashcards.length]);
+
+  const increaseIndex = useCallback(() => {
+    if (flashcards.length === 0) return;
+    setIndex((prevIndex) => Math.min(prevIndex + 1, flashcards.length - 1));
+  }, [flashcards.length]);
+
+  const handleProgressChange = useCallback(
+    (event, newStatus = null) => {
+      if (updatedWorkbook) {
+        const status =
+          newStatus === null ? event.currentTarget.value : newStatus;
+
+        // Update the workbook
+        const newWorkbook = { ...updatedWorkbook };
+        const sheetName = flashcards[index].sheet;
+        const worksheet = newWorkbook.Sheets[sheetName];
+        let jsonData = XLSX.utils.sheet_to_json(worksheet);
+        const rowIndex = jsonData.findIndex((row) =>
+          [...selectedHeaders].every(
+            (header) => row[header] === flashcards[index][header]
+          )
+        );
+        if (rowIndex !== -1) {
+          // Remove __EMPTY data
+          jsonData = jsonData.map((row) => {
+            const cleaned = { ...row };
+            Object.keys(cleaned).forEach((key) => {
+              if (key.startsWith("__EMPTY")) delete cleaned[key];
+            });
+            return cleaned;
+          });
+          // Update status
+          jsonData[rowIndex][PROGRESS_HEADER] = status;
+          const headers = Object.keys(jsonData[0] || {});
+          newWorkbook.Sheets[sheetName] = XLSX.utils.json_to_sheet(jsonData, {
+            header: headers,
+          });
+        }
+        setUpdatedWorkbook(newWorkbook);
+        setSort(false);
+      }
+    },
+    [updatedWorkbook, flashcards, index, selectedHeaders]
+  );
 
   useEffect(() => {
     if (commonHeaders.length > 0) {
@@ -359,6 +377,31 @@ function App() {
     orderIndices,
   ]);
 
+  // Handle keyboard events to navigate and handle progress
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === "ArrowRight") {
+        increaseIndex();
+      } else if (event.key === "ArrowLeft") {
+        decreaseIndex();
+      } else if (event.key === "1") {
+        handleProgressChange(null, "almost unknown");
+      } else if (event.key === "2") {
+        handleProgressChange(null, "barely understood");
+      } else if (event.key === "3") {
+        handleProgressChange(null, "clearly recognized");
+      } else if (event.key === "4") {
+        handleProgressChange(null, "deeply grasped");
+      } else if (event.key === "5") {
+        handleProgressChange(null, "expertly applied");
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [increaseIndex, decreaseIndex, handleProgressChange]);
+
   return (
     <div className="app-container">
       <AppTour />
@@ -396,7 +439,9 @@ function App() {
           />
           <button
             className={`circle-button ${
-              index === flashcards.length - 1 ? "end" : ""
+              index === flashcards.length - 1 || flashcards.length === 0
+                ? "end"
+                : ""
             }`}
             onClick={increaseIndex}
           >
