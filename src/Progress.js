@@ -4,6 +4,7 @@ export default function Progress({
   progressDict,
   progressHeader,
   handleProgressChange,
+  emptyWorkbook,
 }) {
   return (
     <div className="progress">
@@ -21,7 +22,7 @@ export default function Progress({
           <button
             key={progress}
             value={progress}
-            className="rectangle-button"
+            className={`rectangle-button ${emptyWorkbook ? "disable" : ""}`}
             style={{ backgroundColor: color }}
             onClick={handleProgressChange}
           >
