@@ -67,11 +67,6 @@ h1 {
   cursor: pointer;
 }
 
-.circle-button.end {
-  opacity: 0.5;
-  pointer-events: none;
-}
-
 .circle-button:hover {
   background-color: var(--hover-color);
   color: var(--background-color);
@@ -87,6 +82,11 @@ h1 {
 
 .hidden {
   display: none;
+}
+
+.disable {
+  opacity: 0.5;
+  pointer-events: none;
 }
 
 .file-manager {
