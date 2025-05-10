@@ -409,7 +409,11 @@ function App() {
       <Toaster position="top-center" />
       <div className="app-content">
         <div className="file-sheet">
-          <FileManager handleUpload={handleUpload} handleSave={handleSave} />
+          <FileManager
+            handleUpload={handleUpload}
+            handleSave={handleSave}
+            emptyWorkbook={workbook ? false : true}
+          />
           <Sheets
             sheetNames={sheets}
             selectedSheets={selectedSheets}
@@ -424,7 +428,7 @@ function App() {
         </div>
         <div className="flashcard-container">
           <button
-            className={`circle-button ${index === 0 ? "end" : ""}`}
+            className={`circle-button ${index === 0 ? "disable" : ""}`}
             onClick={decreaseIndex}
           >
             <FontAwesomeIcon icon={faArrowLeft} />
@@ -440,7 +444,7 @@ function App() {
           <button
             className={`circle-button ${
               index === flashcards.length - 1 || flashcards.length === 0
-                ? "end"
+                ? "disable"
                 : ""
             }`}
             onClick={increaseIndex}
@@ -461,12 +465,19 @@ function App() {
           progressDict={PROGRESS}
           progressHeader={PROGRESS_HEADER}
           handleProgressChange={handleProgressChange}
+          emptyWorkbook={workbook ? false : true}
         />
         <div className="order">
-          <button className="rectangle-button" onClick={randomFlashcard}>
+          <button
+            className={`rectangle-button ${workbook ? "" : "disable"}`}
+            onClick={randomFlashcard}
+          >
             Random
           </button>
-          <button className="rectangle-button" onClick={resetOrder}>
+          <button
+            className={`rectangle-button ${workbook ? "" : "disable"}`}
+            onClick={resetOrder}
+          >
             Reset Order
           </button>
         </div>
