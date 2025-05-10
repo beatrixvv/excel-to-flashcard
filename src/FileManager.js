@@ -3,7 +3,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUpload, faSave } from "@fortawesome/free-solid-svg-icons";
 import { Tooltip } from "react-tooltip";
 
-export default function FileManager({ handleUpload, handleSave }) {
+export default function FileManager({
+  handleUpload,
+  handleSave,
+  emptyWorkbook,
+}) {
   const fileInputRef = useRef(null);
 
   function handleClick() {
@@ -36,7 +40,7 @@ export default function FileManager({ handleUpload, handleSave }) {
         data-tooltip-id={"Save"}
         data-tooltip-content={"Save"}
         onClick={handleSave}
-        className="circle-button"
+        className={`circle-button ${emptyWorkbook ? "disable" : ""}`}
         id="save-button"
       >
         <FontAwesomeIcon icon={faSave} />
