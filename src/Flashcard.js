@@ -56,7 +56,9 @@ export default function Flashcard({
       }}
     >
       <button
-        className={`read-button ${frontSide ? "" : "back"}`}
+        className={`read-button ${frontSide ? "" : "back"} ${
+          content.length ? "" : "disable"
+        }`}
         onClick={readFlashcard}
       >
         <FontAwesomeIcon icon={faVolumeUp} />
