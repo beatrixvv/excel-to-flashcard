@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faVolumeUp } from "@fortawesome/free-solid-svg-icons";
+import { faExpand, faVolumeUp } from "@fortawesome/free-solid-svg-icons";
 
 export default function Flashcard({
   content,
@@ -11,6 +11,7 @@ export default function Flashcard({
   progressHeader,
 }) {
   const [frontSide, setFrontSide] = useState(true);
+  const elementRef = useRef(null);
   const data = content[index] ?? {};
   const header = frontSide ? frontHeader : backHeader;
 
@@ -30,6 +31,15 @@ export default function Flashcard({
     window.speechSynthesis.speak(utterance);
   }
 
+  function handleFullscreen(event) {
+    // Prevent the card from flipping
+    event.stopPropagation();
+
+    if (elementRef.current) {
+      elementRef.current.requestFullscreen();
+    }
+  }
+
   const handleClick = useCallback(() => {
     setFrontSide((prev) => !prev);
   }, []);
@@ -39,6 +49,8 @@ export default function Flashcard({
     const handleKeyDown = (event) => {
       if (event.key === "ArrowUp" || event.key === "ArrowDown") {
         handleClick();
+      } else if (event.key === "f") {
+        handleFullscreen(event);
       }
     };
     window.addEventListener("keydown", handleKeyDown);
@@ -49,6 +61,7 @@ export default function Flashcard({
 
   return (
     <div
+      ref={elementRef}
       onClick={handleClick}
       className={`flashcard ${frontSide ? "" : "back"}`}
       style={{
@@ -56,9 +69,15 @@ export default function Flashcard({
       }}
     >
       <button
-        className={`read-button ${frontSide ? "" : "back"} ${
+        className={`flashcard-button fullscreen ${
           content.length ? "" : "disable"
         }`}
+        onClick={handleFullscreen}
+      >
+        <FontAwesomeIcon icon={faExpand} />
+      </button>
+      <button
+        className={`flashcard-button read ${content.length ? "" : "disable"}`}
         onClick={readFlashcard}
       >
         <FontAwesomeIcon icon={faVolumeUp} />
