@@ -172,10 +172,9 @@ h1 {
   overflow: auto;
 }
 
-.read-button {
+.flashcard-button {
   position: absolute;
   top: 0;
-  right: 0;
   padding: 1rem;
   background-color: transparent;
   color: var(--text-color);
@@ -184,8 +183,12 @@ h1 {
   cursor: pointer;
 }
 
-.read-button.back {
-  display: none;
+.flashcard-button.read {
+  right: 0;
+}
+
+.flashcard-button.fullscreen {
+  left: 0;
 }
 
 .index-tracker {
